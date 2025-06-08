@@ -155,7 +155,7 @@ To adjust thresholds (temperature ranges, light levels), modify these constants 
 - Develop mobile app dashboard
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is open-source under the MIT License. Feel free to modify and share.
 
 ---
 ## Author  
