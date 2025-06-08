@@ -1,0 +1,28 @@
+#include "pwm.h"
+#include "std_types.h"
+#include "common_macros.h"
+#include "gpio.h"
+#include <avr/io.h>
+
+void PWM_Timer0_Start(uint8 duty_cycle){
+	GPIO_setupPinDirection(PWM_PORT_ID,PWM_PIN_ID,PIN_OUTPUT);
+
+	//Set the inital value of the timer
+	TCNT0 = 0;
+
+	//Set the prescaler value 1028
+	SET_BIT(TCCR0,CS00);
+	CLEAR_BIT(TCCR0,CS01);
+	SET_BIT(TCCR0,CS02);
+
+	//Set the waveform Generation Mode Bit to Fast PWM
+	SET_BIT(TCCR0,WGM01);
+	SET_BIT(TCCR0,WGM00);
+
+	//Set the PWM mode to be non-inverting
+	CLEAR_BIT(TCCR0,COM00);
+	SET_BIT(TCCR0,COM01);
+
+
+	OCR0 = (duty_cycle * 225) / 100;
+}

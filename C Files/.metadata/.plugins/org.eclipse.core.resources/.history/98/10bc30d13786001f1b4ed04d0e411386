@@ -1,0 +1,13 @@
+#ifndef MOTOR_H_
+#define MOTOR_H_
+
+#define IN1_PORT_ID (PORTB_ID)
+#define IN1_PIN_ID (PIN0_ID)
+
+#define IN2_PORT_ID (PORTB_ID)
+#define IN2_PIN_ID (PIN1_ID)
+
+#define MOTOR_OFF LOGIC_LOW
+#define MOTOR_ON LOGIC_HIGH
+
+#endif /* MOTOR_H_ */

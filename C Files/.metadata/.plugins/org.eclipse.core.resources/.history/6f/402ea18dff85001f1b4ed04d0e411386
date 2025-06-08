@@ -1,0 +1,45 @@
+ /******************************************************************************
+ *
+ * Module: LDR (Light Dependent Resistor)
+ *
+ * File Name: ldr.c
+ *
+ * Description: source file for the LDR (Light Dependent Resistor) Driver
+ *
+ * Author: Ahmed Alaa
+ *
+ *******************************************************************************/
+
+#include "ldr.h"
+#include "adc.h"
+
+/*
+ * Description :
+ * Function responsible for calculate the light intensity from the ADC digital value.
+ */
+uint16 LDR_getlightIntensity(void)
+{
+	uint16 light_intensity_value = 0;
+	uint16 adc_value = 0;
+
+	/* Read ADC channel where the LDR is connected */
+	adc_value = ADC_readChannel(LDR_SENSOR_CHANNEL_ID);
+
+	/* Calculate the voltage from the ADC value (in mV) */
+	uint32 V_out = (uint32)adc_value * ADC_REF_VOLT_VALUE / ADC_MAXIMUM_VALUE;
+
+	/* Calculate the LDR resistance */
+	uint32 R_LDR = 0;
+
+	if (V_out > 0) // Avoid division by zero
+	{
+		R_LDR = R_FIXED * (LDR_SENSOR_MAX_VOLT_VALUE * 100 / V_out - 1);
+
+		/* Calculate light intensity percentage based on LDR resistance */
+		// This formula is simplified; adjust as necessary for accuracy.
+		light_intensity_value = (uint16_t)((R_LDR * LDR_SENSOR_MAX_LIGHT_INTENSITY) / (R_LDR + R_FIXED));
+	}
+
+	return light_intensity_value;
+}
+

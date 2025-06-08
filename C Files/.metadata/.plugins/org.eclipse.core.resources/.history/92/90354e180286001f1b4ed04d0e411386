@@ -1,0 +1,55 @@
+ /******************************************************************************
+ *
+ * Module: LDR (Light Dependent Resistor)
+ *
+ * File Name: ldr.c
+ *
+ * Description: source file for the LDR (Light Dependent Resistor) Driver
+ *
+ * Author: Ahmed Alaa
+ *
+ *******************************************************************************/
+
+#include "ldr.h"
+#include "adc.h"
+
+/*
+ * Description :
+ * Function responsible for calculate the light intensity from the ADC digital value.
+ */
+uint16 LDR_getlightIntensity(void)
+{
+	uint16 adc_value = 0;
+	    float V_out = 0.0;
+	    float R_LDR = 0.0;
+	    uint16 light_intensity_value = 0;
+
+	    /* Read ADC channel where the LDR is connected */
+	    adc_value = ADC_readChannel(LDR_SENSOR_CHANNEL_ID);
+
+	    /* Calculate the voltage from the ADC value (in volts) */
+	    V_out = (adc_value / (float)ADC_MAXIMUM_VALUE) * ADC_REF_VOLT_VALUE;
+
+	    /* Calculate the LDR resistance */
+	    if (V_out > 0)  // Avoid division by zero
+	    {
+	        R_LDR = R_FIXED * (ADC_REF_VOLT_VALUE / V_out - 1);
+
+	        /* Normalize light intensity: Lower R_LDR means more light */
+	        if (R_LDR < R_FIXED) {
+	            // Scale the value to fit within 0 to LDR_SENSOR_MAX_LIGHT_INTENSITY
+	            light_intensity_value = (uint16)((LDR_SENSOR_MAX_LIGHT_INTENSITY * (R_FIXED - R_LDR)) / R_FIXED);
+	        } else {
+	            // In dark conditions, light intensity is zero
+	            light_intensity_value = 0;
+	        }
+	    }
+
+	    /* Ensure the light intensity is between 0 and 100 */
+	    if (light_intensity_value > LDR_SENSOR_MAX_LIGHT_INTENSITY) {
+	        light_intensity_value = LDR_SENSOR_MAX_LIGHT_INTENSITY;
+	    }
+
+	    return light_intensity_value;
+}
+

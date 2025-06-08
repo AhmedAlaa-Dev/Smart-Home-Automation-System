@@ -1,0 +1,21 @@
+14:25:17 **** Incremental Build of configuration Debug for project Standard Embedded Diploma - Mini Project 3 ****
+make all 
+Building file: ../main.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=16000000UL -MMD -MP -MF"main.d" -MT"main.o" -c -o "main.o" "../main.c"
+Finished building: ../main.c
+ 
+Building target: Standard Embedded Diploma - Mini Project 3.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,Standard Embedded Diploma - Mini Project 3.map -mmcu=atmega32 -o "Standard Embedded Diploma - Mini Project 3.elf"  ./gpio.o ./lcd.o ./main.o   
+avr-gcc.exe: Embedded: No such file or directory
+avr-gcc.exe: Diploma: No such file or directory
+avr-gcc.exe: Mini: No such file or directory
+avr-gcc.exe: Project: No such file or directory
+avr-gcc.exe: 3.map: No such file or directory
+avr-gcc.exe: -E or -x required when input is from standard input
+make: *** [Standard Embedded Diploma - Mini Project 3.elf] Error 1
+"make all" terminated with exit code 2. Build might be incomplete.
+
+14:25:17 Build Failed. 1 errors, 0 warnings. (took 383ms)
+

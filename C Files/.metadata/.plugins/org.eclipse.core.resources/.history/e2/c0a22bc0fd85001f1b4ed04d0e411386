@@ -1,0 +1,63 @@
+#include<avr/io.h>
+#include<util/delay.h>
+#include "std_types.h"
+#include "led.h"
+#include "lcd.h"
+#include "buzzer.h"
+#include "adc.h"
+#include "lm35_sensor.h"
+
+int main(void){
+	LEDS_init();
+	LCD_init();
+	Buzzer_init();
+	ADC_init();
+	//-------------------------------------------------------------------
+	uint8 temperature;
+	uint16 light_intensity;
+	//-------------------------------------------------------------------
+	LCD_displayStringRowColumn(0,4, "FAN is");
+	LCD_displayStringRowColumn(1,0, "Temp=");
+	LCD_displayStringRowColumn(1,8,"LDR=");
+	LCD_displayStringRowColumn(1,15,"%");
+	//-------------------------------------------------------------------
+	//initialization OBJECTS of STRUCTURE LED_ID
+	LED_ID RED_LED = {RED_LED_PORT_ID, RED_LED_PIN_ID};
+	LED_ID GREEN_LED = {GREEN_LED_PORT_ID, GREEN_LED_PIN_ID};
+	LED_ID BLUE_LED = {BLUE_LED_PORT_ID, BLUE_LED_PIN_ID};
+	//-------------------------------------------------------------------
+	Buzzer_on();
+	_delay_ms(3000);
+	Buzzer_off();
+	//-------------------------------------------------------------------
+
+	while(1){
+
+		LED_on(RED_LED);
+		_delay_ms(500);
+		LED_off(RED_LED);
+		LED_on(GREEN_LED);
+		_delay_ms(500);
+		LED_off(GREEN_LED);
+		LED_on(BLUE_LED);
+		_delay_ms(500);
+		LED_off(BLUE_LED);
+		_delay_ms(500);
+		//--------------------------------
+		temperature = LM35_getTemperature();
+		LCD_moveCursor(1,5);
+		if(temperature >= 100){
+			LCD_intgerToString(temperature);
+		}else{
+			LCD_intgerToString(temperature);
+			/* In case the digital value is two or one digits print space in the next digit place */
+			LCD_displayCharacter(' ');
+		}
+		//-------------------------------
+		light_intensity = LDR_getlightIntensity();
+		LCD_moveCursor(1,12);
+		LCD_intgerToString(light_intensity);
+
+	}
+}
+
